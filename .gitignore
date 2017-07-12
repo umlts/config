@@ -1,0 +1,9 @@
+vendor/
+data/
+logs/*
+config
+phpunit
+test.php
+*.geany
+*~
+*#

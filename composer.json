@@ -1,0 +1,19 @@
+{
+    "name": "umlts/config",
+    "description": "Configuration loader class.",
+    "type": "library",
+    "authors": [
+        {
+            "name": "bartikowskiw",
+            "email": "bartikowskiw@missouri.edu"
+        }
+    ],
+    "require-dev": {
+        "phpunit/phpunit": "^6.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Umlts\\Config\\": "src/"
+        }
+    }
+}
