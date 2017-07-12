@@ -135,7 +135,7 @@ class Config {
     public function load( string $file, string $format = '' ) : Config {
         
         try {
-            $content = file_get_contents( $file );
+            $content = @file_get_contents( $file );
         } catch ( \Exception $e ) {
             throw new \InvalidArgumentException( 'Cannot open "' . $file . '".' );
         }
