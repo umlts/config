@@ -1,0 +1,5 @@
+group1:
+    prop1: "yaml value for property 1"
+    prop2: "base value for property 1"
+    prop4: "additional value from yaml"
+prop3: "base value for property 3"

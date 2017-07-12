@@ -56,7 +56,7 @@ class Config {
     public function __construct( string $basedir = './', bool $ignore_default = FALSE ) {
         $this->basedir = substr( $basedir, -1 ) == '/' ? $basedir :  $basedir . '/';
         
-        if ( !$ignore_default ) {
+        if ( $ignore_default === FALSE ) {
             $this->optsIgnoreDefaultConfig();
             $this->loadDefaultFiles();
         }
@@ -134,7 +134,11 @@ class Config {
      */
     public function load( string $file, string $format = '' ) : Config {
         
-        $content = file_get_contents( $file );
+        try {
+            $content = file_get_contents( $file );
+        } catch ( \Exception $e ) {
+            throw new \InvalidArgumentException( 'Cannot open "' . $file . '".' );
+        }
         
         if ( $content === FALSE ) {
             throw new \InvalidArgumentException( 'Cannot open "' . $file . '".' );
@@ -252,7 +256,7 @@ class Config {
      *   Returns the key array with namespace
      */
     private function prependKey( string $key ) : array {
-        if ( empty( $key ) ) { return this->getNamespaceArray(); }
+        if ( empty( $key ) ) { return $this->getNamespaceArray(); }
         $key_array = explode( '/', $key );
         return array_merge( $this->getNamespaceArray(), $key_array );
     }
@@ -268,7 +272,7 @@ class Config {
      * $return mixed
      *   Returns the value
      */
-    public function get( string $key = NULL, $default = NULL ) {
+    public function get( string $key = '', $default = NULL ) {
         
         $key_array = $this->prependKey( $key );
         
