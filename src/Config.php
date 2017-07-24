@@ -46,6 +46,13 @@ class Config {
     ];
     
     /**
+     * @var bool $permit_root
+     *   Is it allowed to get configuration data
+     *   outside the namespace?
+     */
+    private $permit_root = TRUE;
+    
+    /**
      * Constructs the objects
      * 
      * @param string $basedir
@@ -99,7 +106,7 @@ class Config {
     private function optsIgnoreDefaultConfig()  : Config {
         $opt = getopt( '', [
             self::OPT_NAMESPACE . ':ignore-default',
-            self:: OPT_NAMESPACE . ':ignore-default'
+            self::OPT_NAMESPACE . ':ignore-default'
         ] );
         if ( !empty( $opt ) ) {
             $this->base_config_files = [];
@@ -251,14 +258,27 @@ class Config {
      * Prepends the key with the active namespace.
      * 
      * @param string $key
-     * 
+     * @throws InvalidArgumentException
+     *   If access to the root element is not permitted
      * @return array
      *   Returns the key array with namespace
      */
     private function prependKey( string $key ) : array {
         if ( empty( $key ) ) { return $this->getNamespaceArray(); }
+        
         $key_array = explode( '/', $key );
-        return array_merge( $this->getNamespaceArray(), $key_array );
+        
+        // Root?
+        if ( strpos( $key, '/' ) === 0 ) {
+            if ( $this->permit_root === FALSE
+              && !empty( $this->getNamespaceArray() ) ) {
+                throw new \InvalidArgumentException( 'Root access not permitted: "' . $key . '".' );
+            }
+            array_shift( $key_array );
+            return $key_array;
+        } else {
+            return array_merge( $this->getNamespaceArray(), $key_array );
+        }
     }
     
     /**

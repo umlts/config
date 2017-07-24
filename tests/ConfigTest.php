@@ -19,12 +19,15 @@ final class ConfigTest extends TestCase {
     
     public function testSetAndGet() {
         $config = new Config();
+        $config->set( 'root_var', 'root_value' );
         $config->set( 'test_ns/key1', 'value1' );
         
         $this->assertEquals( $config->get( 'test_ns/key1' ), 'value1' );
         
         $config->setNamespace( 'test_ns' );
         $this->assertEquals( $config->get( 'key1' ), 'value1' );
+        
+        $this->assertEquals( $config->get( '/root_var' ), 'root_value' );
     }
     
     public function testLoadsFilesCorrectly() {
