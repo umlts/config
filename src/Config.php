@@ -314,6 +314,29 @@ class Config {
     }
     
     /**
+     * Checks if a setting for a key exists.
+     * 
+     * @param string $key
+     *   The key for the setting. Seperated by '/'.
+     * 
+     * $return bool
+     *   Returns if the setting exists
+     */
+    public function exists( string $key = '' ) : bool {
+        
+        $key_array = $this->prependKey( $key );
+        
+        $value = $this->config;
+        
+        foreach ( $key_array as $k ) {
+            if ( !isset( $value[ $k ] ) ) { return FALSE; }
+            $value = $value[ $k ];
+        }
+        
+        return TRUE;
+    }
+    
+    /**
      * Sets a configuration setting.
      * 
      * @param string $key

@@ -28,6 +28,12 @@ final class ConfigTest extends TestCase {
         $this->assertEquals( $config->get( 'key1' ), 'value1' );
         
         $this->assertEquals( $config->get( '/root_var' ), 'root_value' );
+        
+        $this->assertTrue( $config->exists( '/root_var' ) );
+        $this->assertTrue( $config->exists( 'key1' ) );
+        $this->assertTrue( $config->exists( '/test_ns/key1' ) );
+        $this->assertFalse( $config->exists( '/test_ns/key2' ) );
+        $this->assertFalse( $config->exists( 't' ) );
     }
     
     public function testLoadsFilesCorrectly() {
