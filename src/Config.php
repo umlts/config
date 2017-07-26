@@ -128,6 +128,24 @@ class Config {
     }
     
     /**
+     * Removes comments from the config data.
+     * This makes it possible to have comments in JSON files
+     * which is usually not possible.
+     * 
+     * Comment format:
+     *   - If a "#" is the first character (except for white spaces
+     *     and tabs) in a line, the complete line will be ignored.
+     * 
+     * @param string $content
+     *   String with comments
+     * @return string
+     *   Returns string without comments
+     */
+    public function removeComment( string $content ) : string {
+        return preg_replace( '/^\s*#(.*?)\n/m', '', $content );
+    }
+    
+    /**
      * Loads a configuration file.
      * 
      * @param string $file
@@ -157,7 +175,7 @@ class Config {
         
         switch ( $format ) {
             case 'json':
-                $data = json_decode( $content, TRUE );
+                $data = json_decode( $this->removeComment( $content ), TRUE );
                 if ( $data == NULL && json_last_error() != JSON_ERROR_NONE ) {
                     throw new \RuntimeException( 'Error parsing JSON: ' . json_last_error_msg() );
                 }

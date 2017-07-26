@@ -52,4 +52,21 @@ final class ConfigTest extends TestCase {
         $this->assertEquals( $config->get( 'group1/prop5', 'nope' ), 'additional value from ini' );
     }
     
+    public function testComment() {
+        $config = new Config();
+        $json = '
+            {
+                # Nothing!
+                "prop3": "base #comment value for property 3"
+                # Just a comment
+            }';
+        
+        $json_wo_comment = '
+            {
+                "prop3": "base #comment value for property 3"
+            }';
+        
+        $this->assertEquals( $json_wo_comment, $config->removeComment( $json ) );
+    }
+    
 }
