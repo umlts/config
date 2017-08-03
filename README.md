@@ -55,6 +55,13 @@ files:
 $config_wo_default = new Config( __DIR__, /* $ignore_default = */ TRUE );
 ```
 
+The class tries to guess the config file format by its ending. If that
+is not possible, the format may be set manually:
+
+```php
+$config->load( 'http://localhost/config', /* $format = */ 'json' )
+```
+
 ### Namespaces
 
 A namespace can be set at any time. The config object gives back the
