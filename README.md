@@ -23,7 +23,7 @@ $config = new Config( __DIR__ );
 echo $config->get( 'setting_name' );
 echo $config->get( 'settings_set/setting_name' );
 
-// $default_value will be returned if 'setting_name' isn't set.
+// Echoes $default_value if 'setting_name' isn't set.
 echo $config->get( 'setting_name', $default_value );
 
 // Check if setting exists:
