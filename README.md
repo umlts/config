@@ -37,15 +37,23 @@ files can be added. The settings from the new config file overwrite
 the existing ones.
 
 ```php
-$config->load( 'path/to/config.json' ); 
-$config->load( 'path/to/config.yaml' );
-$config->load( 'path/to/config.ini' );
+$config
+    ->load( 'path/to/config.json' )
+    ->load( 'path/to/config.yaml' )
+    ->load( 'path/to/config.ini' );
 ```
 
 - **Comments in JSON**: JSON files may have comments indicated by a leading 
 ```#```. The comments will be removed before the content gets parsed.
 - **Stream wrappers**: The config files are loaded thru stream wrappers.
 It is possible to load a config file from a HTTP server or an FTP server.
+
+It is possible to prevent the class from loading the default config
+files:
+
+```php
+$config_wo_default = new Config( __DIR__, /* $ignore_default = */ TRUE );
+```
 
 ### Namespaces
 
@@ -55,19 +63,16 @@ values inside this namespace:
 ```php
 $config->set( 'namespace/setting', 10 );
 
-// Returns 10
-echo $config->get( 'namespace/setting' );
+echo $config->get( 'namespace/setting' );   // Returns 10
 
 $config->setNamespace( 'namespace' );
-// Returns also 10
-echo $config->get( 'setting' );
+echo $config->get( 'setting' ); // Returns also 10
 ```
 The namespace can be overriden by a leading slash:
 
 ```php
 $config->setNamespace( 'namespace' );
-// Returns 10, too
-echo $config->get( '/namespace/setting' );
+echo $config->get( '/namespace/setting' );  // Returns 10, too
 ```
 
 ### Command line options
@@ -78,6 +83,6 @@ The Config class also takes command line arguments in account:
 php config-test.php --config:ignore-default --config:file=/tmp/test.config.json
 ```
 
-- *config:ignore-default* prevents the Class from loading the default
+- *config:ignore-default* prevents the class from loading the default
   config files.
 - *config:file* loads an (additional) config file.
