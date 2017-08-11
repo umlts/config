@@ -81,6 +81,8 @@ class Config {
     private function optsConfigFiles() : Config {
         $opt = getopt( '', [ self::OPT_NAMESPACE . ':file:' ] );
         
+        if ( empty( $opt ) ) { return $this; }
+        
         foreach ( $opt as $option ) {
             if ( is_array( $option ) ) {
                 foreach ( $option as $o ) {
