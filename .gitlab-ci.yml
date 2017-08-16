@@ -10,17 +10,17 @@ before_script:
 # Install git, the php image doesn't have installed
 - apt-get update -yqq
 - apt-get install git -yqq
-# Install the vcs.missouri.edu cert
-- sudo apt-get install gnutls-bin 
-- gnutls-cli --print-cert vcs.missouri.edu </dev/null| sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' > vcs.missouri.edu.crt
-- sudo cp myserver.crt /usr/local/share/ca-certificates/vcs.missouri.edu.crt
-- sudo update-ca-certificates
 
 # Install composer
 - curl -sS https://getcomposer.org/installer | php
 
 # Install all project dependencies
 - php composer.phar install
+
+# Set variables
+variables:
+# This is ugly but solves CA issues with vcs.missouri.edu
+- GIT_SSL_NO_VERIFY: "true"
 
 test:php7:
   image: php:7
