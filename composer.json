@@ -15,5 +15,8 @@
         "psr-4": {
             "Umlts\\Config\\": "src/"
         }
+    },
+    "require": {
+        "ext-yaml": "^2.0"
     }
 }
