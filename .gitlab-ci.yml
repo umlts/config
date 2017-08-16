@@ -10,7 +10,7 @@ before_script:
 # Install git, the php image doesn't have installed
 - apt-get update -yqq
 - apt-get install git -yqq
-- apt-get install php-yaml -yqq
+- docker-php-ext-install yaml
 
 # Install composer
 - curl -sS https://getcomposer.org/installer | php
