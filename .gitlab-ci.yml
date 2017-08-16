@@ -19,8 +19,8 @@ before_script:
 
 # Set variables
 variables:
-# This is ugly but solves CA issues with vcs.missouri.edu
-- GIT_SSL_NO_VERIFY: "true"
+  # This is ugly but solves CA issues with vcs.missouri.edu
+  GIT_SSL_NO_VERIFY: "1"
 
 test:php7:
   image: php:7
