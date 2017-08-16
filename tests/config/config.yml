@@ -1,0 +1,3 @@
+group1:
+    prop1: "yaml value for property 1"
+prop3: "base value for property 3"

@@ -1,7 +1,7 @@
 vendor/
 data/
 logs/*
-config/
+/config/
 phpunit
 test.php
 *.geany
