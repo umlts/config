@@ -66,11 +66,9 @@ class Config {
         $this->basedir = substr( $basedir, -1 ) == '/' ? $basedir :  $basedir . '/';
 
         if ( $ignore_default === FALSE ) {
-            $this->optsIgnoreDefaultConfig();
             $this->loadDefaultFiles();
         }
 
-        $this->optsConfigFiles();
     }
 
     /**
@@ -87,50 +85,6 @@ class Config {
         $clone->setNamespace( '/' );
         $clone->merge( $this->get( $key ) );
         return $clone;
-    }
-
-    /**
-     * Reads the CLI arguments and loads the given config files.
-     *
-     * @return Config
-     *   Returns this object
-     */
-    private function optsConfigFiles() : Config {
-        $opt = getopt( '', [ self::OPT_NAMESPACE . ':file:' ] );
-
-        if ( empty( $opt ) ) { return $this; }
-
-        foreach ( $opt as $option ) {
-            if ( is_array( $option ) ) {
-                foreach ( $option as $o ) {
-                    $this->load( $o );
-                }
-            } else {
-                $this->load( $option );
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * Read the CLI arguments and removes the default config files
-     * so they won't be loaded.
-     *
-     * @example php config-test.php --config:ignore-default --config:file=/tmp/test.config.json
-     *
-     * @return Config
-     *   Returns this object
-     */
-    private function optsIgnoreDefaultConfig()  : Config {
-        $opt = getopt( '', [
-            self::OPT_NAMESPACE . ':ignore-default',
-            self::OPT_NAMESPACE . ':ignore-default'
-        ] );
-        if ( !empty( $opt ) ) {
-            $this->base_config_files = [];
-        }
-        return $this;
     }
 
     /**

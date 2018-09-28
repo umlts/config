@@ -81,15 +81,3 @@ The namespace can be overriden by a leading slash:
 $config->setNamespace( 'namespace' );
 echo $config->get( '/namespace/setting' );  // Returns 10, too
 ```
-
-### Command line options
-
-The Config class also takes command line arguments in account:
-
-```sh
-php config-test.php --config:ignore-default --config:file=/tmp/test.config.json
-```
-
-- *config:ignore-default* prevents the class from loading the default
-  config files.
-- *config:file* loads an (additional) config file.
