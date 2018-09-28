@@ -73,9 +73,18 @@ class Config {
         $this->optsConfigFiles();
     }
 
+    /**
+     * Clones configuration
+     *
+     * @param string $key
+     *   If namespace is given, the cloned Config object contains
+     *   just the data underneath this namespace.
+     * @return Config
+     *   Cloned object, namespace set to root.
+     */
     public function clone( string $key = '' ) : Config {
         $clone = new Config( $this->basedir, TRUE );
-        $clone->setNamespace( '' );
+        $clone->setNamespace( '/' );
         $clone->merge( $this->get( $key ) );
         return $clone;
     }
