@@ -73,6 +73,12 @@ class Config {
         $this->optsConfigFiles();
     }
 
+    public function clone( string $key = '' ) : Config {
+        $clone = new Config( $this->basedir, TRUE );
+        $clone->setNamespace( '' );
+        $clone->merge( $this->get( $key ) );
+        return $clone;
+    }
 
     /**
      * Reads the CLI arguments and loads the given config files.
@@ -182,34 +188,75 @@ class Config {
 
         switch ( $format ) {
             case 'json':
-                $data = json_decode( $this->removeComment( $content ), TRUE );
-                if ( $data == NULL && json_last_error() != JSON_ERROR_NONE ) {
-                    throw new \RuntimeException( 'Error parsing JSON: ' . json_last_error_msg() );
-                }
-                $data = (array) $data;
+                $this->parseJson( $content );
                 break;
             case 'yml':
             case 'yaml':
-                $data = yaml_parse( $content );
-                if ( $data === FALSE ) {
-                    throw new \RuntimeException( 'Error parsing YAML.' );
-                }
+                $this->parseYaml( $content );
                 break;
             case 'ini':
-                $data = parse_ini_string( $content, TRUE );
-                if ( $data === FALSE ) {
-                    throw new \RuntimeException( 'Error parsing Ini file.' );
-                }
+                $this->parseIni( $content );
                 break;
             default:
                 throw new \InvalidArgumentException( 'Cannot guess the file format or the format does not exist.' );
                 break;
         }
 
+        return $this;
+    }
+
+    /**
+     * Parses JSON configuration data and stores it
+     *
+     * @param string $input
+     * @return Config
+     */
+    public function parseJson( string $content ) : Config {
+
+        $data = json_decode( $this->removeComment( $content ), TRUE );
+        if ( $data == NULL && json_last_error() != JSON_ERROR_NONE ) {
+            throw new \RuntimeException( 'Error parsing JSON: ' . json_last_error_msg() );
+        }
+        $data = (array) $data;
         if ( !empty( $data ) ) { $this->merge( $data ); }
 
         return $this;
     }
+
+    /**
+     * Parses YAML configuration data and stores it
+     *
+     * @param string $input
+     * @return Config
+     */
+    public function parseYaml( string $content ) : Config {
+
+        $data = yaml_parse( $content );
+        if ( $data === FALSE ) {
+            throw new \RuntimeException( 'Error parsing YAML.' );
+        }
+        if ( !empty( $data ) ) { $this->merge( $data ); }
+
+        return $this;
+    }
+
+    /**
+     * Parses INI configuration data and stores it
+     *
+     * @param string $input
+     * @return Config
+     */
+    public function parseIni( string $content ) : Config {
+
+        $data = parse_ini_string( $content, TRUE );
+        if ( $data === FALSE ) {
+            throw new \RuntimeException( 'Error parsing Ini file.' );
+        }
+        if ( !empty( $data ) ) { $this->merge( $data ); }
+
+        return $this;
+    }
+
 
     /**
      * Loads the default configuration files.
@@ -257,7 +304,7 @@ class Config {
      *   Returns this object.
      */
     public function setNamespace( string $ns ) : Config {
-        if ( empty( $ns ) ) {
+        if ( empty( $ns ) || $ns === '/' ) {
             $this->ns = [];
             return $this;
         }
