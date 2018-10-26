@@ -2,9 +2,7 @@
 
 Configuration loader class.
 
-The class loads configuration files in JSON, YAML or INI format. And it 
-adds the possibility to use the command line to change the configuration
-files loaded.
+The class loads configuration files in JSON, YAML or INI format.
 
 ## Usage
 
