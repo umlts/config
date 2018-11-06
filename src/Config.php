@@ -271,6 +271,9 @@ class Config {
             $this->ns = [];
             return $this;
         }
+        if ( !$this->exists( $ns ) ) {
+            throw new \InvalidArgumentException( 'Namespace "' . $ns . '" not valid.' );
+        }
         $this->ns = explode( '/', $ns );
         return $this;
     }
