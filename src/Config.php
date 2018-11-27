@@ -274,7 +274,7 @@ class Config {
         if ( !$this->exists( $ns ) ) {
             throw new \InvalidArgumentException( 'Namespace "' . $ns . '" not valid.' );
         }
-        $this->ns = explode( '/', $ns );
+        $this->ns = $this->prependKey( $ns );
         return $this;
     }
 
@@ -293,6 +293,16 @@ class Config {
     }
 
     /**
+     * Split the key into an array.
+     *
+     * @param string $key
+     * @return string[]
+     */
+    private function getKeyArray( string $key ) : array {
+        return explode( '/', $key );
+    }
+
+    /**
      * Prepends the key with the active namespace.
      *
      * @param string $key
@@ -304,7 +314,7 @@ class Config {
     private function prependKey( string $key ) : array {
         if ( empty( $key ) ) { return $this->getNamespaceArray(); }
 
-        $key_array = explode( '/', $key );
+        $key_array = $this->getKeyArray( $key );
 
         // Root?
         if ( strpos( $key, '/' ) === 0 ) {

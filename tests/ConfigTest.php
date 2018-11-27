@@ -69,6 +69,22 @@ final class ConfigTest extends TestCase {
             $config->setNamespace( '/' )->get( 'group1' ),
             $config->setNamespace( 'group1' )->get( '/group1' )
         );
+
+        $config->setNamespace( '/' );
+        $this->assertEquals(
+            $config->get( 'group1/prop1' ),
+            $config
+                ->setNamespace( 'group1' )
+                ->setNamespace( '/group1' )
+                ->get( 'prop1' )
+        );
+    }
+
+    public function testNamespaceExceptions() {
+        $config = new Config( __DIR__ );
+
+        $this->expectException( \InvalidArgumentException::class );
+        $config->setNamespace( 'invalid/namespace' );    
     }
 
     public function testClone() {
